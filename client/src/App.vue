@@ -1,22 +1,30 @@
 <template>
   <div id="app">
     <center><h2>PeopleRepo</h2></center>
-    <!--<SignIn></SignIn>-->
-    <Register></Register>
+    <router-view></router-view>
+    <Popup></Popup>    
   </div>
 </template>
 
 <script>
-//import SignIn from './components/signIn';
-import Register from './components/register';
+import Popup from './components/popup';
+
 export default {
   name: 'App',
-  components: {Register}
-  
+  data() {
+    return {
+      
+    }
+  },
+  components: {Popup},
+  computed: {},
+  methods: {
+    
+  }
 }
 </script>
 
-<style>
+<style lang="scss">
 html,body {
   height: 100%;
   margin: 1%;
@@ -27,5 +35,8 @@ body {
 }
 * {
   box-sizing: border-box;
+}
+.hidden {
+  display: none;
 }
 </style>

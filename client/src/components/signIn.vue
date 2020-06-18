@@ -4,11 +4,11 @@
             <center><label for="username">Username : <input type="text" name="username" id="username"></label></center>
         </div>
         <div>
-            <center><label for="password">Password : <input type="text" name="password" id="password"></label></center>
+            <center><label for="password">Password : <input type="password" name="password" id="password"></label></center>
         </div>
         <center><button type="button" id="signIn" @click="signIn">Sign In</button></center>
         <div>
-            <center>New User? <a href="#" id="signUp" @click="signUp">Sign Up</a> here</center>
+            <center>New User? <router-link to="signUp">Sign Up</router-link> here</center>
         </div>
     </div>
 </template>
@@ -33,9 +33,6 @@ export default {
             });
             axios.post('/signIn',postBody,{headers})
             .then().catch();
-        },
-        signUp() {
-           
         }
     }
 }

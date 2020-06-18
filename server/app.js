@@ -72,19 +72,15 @@ const requestHandler = async(req,res) => {
 				await instance.db("peoplerepo").collection("users").insertOne(reqJSON);
 				res.writeHead(201, headers);
 				res.write(JSON.stringify({"status": 1}));
-				//mails
+				//mail
 				var mailOptions = {
-					from: 'PeopleRepo',
+					from: {name:'PeopleRepo',address:'spartanprince27@gmail.com'},
 					to: reqJSON.email,
 					subject: 'PeopleRepo Registration',
-					html: `<h1>Hey ${reqJSON.username}!</h1><br><p>Welcome to PeopleRepo! We are glad to have you!</p>`
+					html: `<h2>Hey ${reqJSON.username}!</h2><br><div>Welcome to PeopleRepo. We are glad to have you!</div>`
 				};				
 				transporter.sendMail(mailOptions,(error,info)=>{
-					if(error) {
-						console.log(error);
-					} else {
-						console.log(`Email successfully sent: ${info.response}`);
-					}
+					console.log(error?error:`Email successfully sent: ${info.response}`);
 				});
 				instance.close();
 				console.log('connection succssfully closed');				
