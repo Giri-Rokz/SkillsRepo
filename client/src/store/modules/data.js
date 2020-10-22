@@ -1,13 +1,23 @@
+import axios from 'axios';
+import router from '../../router';
+
+const headers = {
+    'Content-Type': 'application/json'
+  }
+
 const state = {
     loggedIn: null,
     showPopup: null,
-    popupmsg: null
+    popupmsg: null,
+    profileInfo: {},
+    headers: {'Content-Type':'application/json'}
 }
 
 const getters = {
     isLoggedIn: state => !!state.loggedIn,
     shouldDisplayPopup: state => !!state.showPopup,
-    getPopupMsg: state => state.popupmsg
+    getPopupMsg: state => state.popupmsg,
+    getProfileInfo: state=> state.profileInfo
 }
 
 const actions = {
@@ -19,6 +29,9 @@ const actions = {
     },
     buildPopupMsg: ({commit},popupmsg) => {
         commit('setPopupMsg',popupmsg);
+    },
+    signIn: ({commit},payload) => {
+        commit('setProfileInfo',payload);
     }
 }
 
@@ -31,6 +44,14 @@ const mutations = {
     },
     setPopupMsg: (state,popupMessage) => {
         state.popupmsg = popupMessage;
+    },
+    setProfileInfo: (state,userInfo) => {
+        axios.post('/signIn',userInfo.postBody,{headers}).then((resp)=> {
+            if(resp.data.status) {
+                state.profileInfo = resp.data.profileInfo;
+                router.push('profile');
+            }
+        }).catch();
     }
 }
 

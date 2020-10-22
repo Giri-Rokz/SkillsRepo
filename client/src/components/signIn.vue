@@ -1,38 +1,45 @@
 <template>
-    <div id="signInForm">        
-        <div>
-            <center><label for="username">Username : <input type="text" name="username" id="username"></label></center>
-        </div>
-        <div>
-            <center><label for="password">Password : <input type="password" name="password" id="password"></label></center>
-        </div>
-        <center><button type="button" id="signIn" @click="signIn">Sign In</button></center>
-        <div>
-            <center>New User? <router-link to="signUp">Sign Up</router-link> here</center>
-        </div>
-    </div>
+    <v-container class="" fluid>
+        <v-form id="signInForm">
+            <v-row>
+                <v-col cols="12">
+                    <center><h4>Welcome Back! Sign in to your profile</h4></center>
+                </v-col>    
+                <v-col cols="12">    
+                    <center>
+                        <v-text-field placeholder="E-mail" name="email" id="email"  outlined dense></v-text-field>
+                    </center>
+                    <center>
+                        <v-text-field placeholder="Password" type="password" name="password" id="password" outlined dense></v-text-field>
+                    </center>
+                </v-col>
+                <v-col cols="12">
+                    <center><v-btn color="primary" small dark id="signIn" @click="getUserInfo">Sign In</v-btn></center>
+                </v-col>
+                <v-col cols="12">
+                    <center>New User? <router-link to="signUp">Sign Up</router-link> here</center>
+                </v-col>
+            </v-row>
+        </v-form>
+    </v-container>  
 </template>
 
 <script>
-import axios from 'axios';
-const headers = {
-  'Content-Type': 'application/json'
-}
+import {mapActions} from 'vuex';
+
 export default {
     name: 'SignIn',
     data: function() {
-        return {
-
-        }
+        return {}
     },
     methods: {
-        signIn: function() {
+        ...mapActions(['signIn']),
+        getUserInfo: function() {
             var postBody = {};
             Array.from(document.querySelectorAll('input')).forEach(node=>{
                 postBody[node.name] = node.value;
             });
-            axios.post('/signIn',postBody,{headers})
-            .then().catch();
+            this.signIn({postBody});
         }
     }
 }

@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 
 const auth = require('./auth');
 const connection = require('./connection');
+const { user } = require('./auth');
 
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
@@ -34,19 +35,28 @@ const requestHandler = async(req,res) => {
 			try{				
 				let reqJSON = JSON.parse(reqData);
 				const instance = await connection();				
-				let cursor = instance.db("peoplerepo").collection("users").find({username: reqJSON.username});
+				let cursor = instance.db("peoplerepo").collection("users").find({email: reqJSON.email});
 				let userObj = await cursor.next();
 				if(userObj) {
-					if(userObj && userObj.username === reqJSON.username && userObj.password === reqJSON.password) {
+					if(userObj && userObj.email === reqJSON.email && userObj.password === reqJSON.password) {
 						res.writeHead(201, headers);
-						res.write(JSON.stringify({"status": 1}));
-					} else if(userObj && userObj.username === reqJSON.username) {
+						res.write(JSON.stringify({
+							"status": 1,
+							"profileInfo": {
+								"firstName": userObj.firstName,
+								"lastName": userObj.lastName,
+								"knownSkills": userObj.knownSkills,
+								"wantToLearn": userObj.wantToLearn,
+								"matches": userObj.matches
+							}
+						}));
+					} else if(userObj && userObj.email === reqJSON.email) {
 						res.writeHead(404, headers);
 						res.write(JSON.stringify({"status": 0,"errorMsg":"Invalid password"}));
 					} 
 				} else {
 					res.writeHead(404, headers);
-					res.write(JSON.stringify({"status": 0,"errorMsg":"Invalid username or password"}));
+					res.write(JSON.stringify({"status": 0,"errorMsg":"Invalid email or password"}));
 				}
 				instance.close();
 				console.log('connection succssfully closed');	

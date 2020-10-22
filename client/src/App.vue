@@ -1,9 +1,21 @@
 <template>
-  <div id="app">
-    <center><h2>PeopleRepo</h2></center>
-    <router-view></router-view>
-    <Popup></Popup>    
-  </div>
+  <v-app>
+    <v-app-bar app>
+      <v-container fluid>
+        <center><h2>SkillsRepo</h2></center>
+      </v-container>  
+    </v-app-bar>
+    <v-main>
+      <v-container fluid>
+        <v-row>
+          <v-col cols="12">
+            <router-view></router-view>
+            <Popup></Popup>
+          </v-col>
+        </v-row>
+      </v-container>    
+    </v-main>
+  </v-app>
 </template>
 
 <script>
